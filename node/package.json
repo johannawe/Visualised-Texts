@@ -1,0 +1,17 @@
+{
+  "name": "sample-node-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "emotional": "0.0.3",
+    "pos": "^0.4.2",
+    "sentiment": "^5.0.1",
+    "wink-sentiment": "^5.0.0"
+  }
+}
