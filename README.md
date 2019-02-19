@@ -1,4 +1,4 @@
-# BolbLyrics
+# visualised song texts
 A visualisation of song lyrics using sentiment analysis and grammar. </br>
 Positive or negative sentiments are mapped to the form of the blob, while intensity is mapped to opacity and speed of movement. </br>
 The grammar is visualised by the elements color:
