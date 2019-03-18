@@ -3,7 +3,7 @@ var createPath = function(x, y, w, h, tlTor, trTob, blTor, trTob) {
 }
 //M "Bx*0.5" "Ay" Q "Bx" "By" "Bx" "Cy*0.7" Q "Cx" "Cy" "Dx" "Cy*0.3" Q "Dx" "Dy" "Ax*0.8" "Ay" Q "Ax" "Ay" "Bx*0.5" "Ay"
 
-var whichText = 5
+var whichText = 4
 
 
 
@@ -21,8 +21,6 @@ var paths = ["M15.0715655 4.46169795 12.8901865 8.1263716 12.8901865 14.3213542 
 
 
 // .style("max-width", function(){return songs[whichText].lyrics.length*1.2})
-
-console.log(songs[whichText].lyrics.length * 1.2)
 
 
 
@@ -68,9 +66,9 @@ function changeShape(id, score) {
                 var rndm3 = Math.random() * 0.8 + 0.19;
                 var rndm4 = Math.random() * 0.8 + 0.19;
                 if (d.pos == ',' || d.pos == '.' || d.pos == ':' || d.pos == '(' || d.pos == ')' || d.pos == '"' || d.pos == '$' || d.pos == 'SYM') {
-                    var path = createPath(0, 0, 8, 8, 0.5, 0.5, 0.5, 0.5)
+                    var path = createPath(0, 0, 4, 4, rndm1, rndm2, rndm3, rndm3)
                 } else {
-                    var path = createPath(0, 0, 12, 12, rndm1, rndm2, rndm3, rndm3)
+                    var path = createPath(0, 0, 14, 14, rndm1, rndm2, rndm3, rndm3)
                 }
             } else {
 
@@ -93,43 +91,60 @@ var createObjects = function() {
     var yOrigin = -26;
     var PlacementCounter = 0;
     var wrapperWidth;
+   var wordCount = 0;
+
 
     // console.log(processedTexts[1])
 
     //calculate width
-    d3.select("p").text("" + songs[whichText].name + " – " + songs[whichText].interpret + "");
-    d3.select(".wrapper")
-        .style('max-width', function() {
-            // var result
-            // if ((songs[whichText].lyrics.length * 1.2) > 200) {
-            //     var result = "" + songs[whichText].lyrics.length * 1.2 + "px"
-            //     wrapperWidth = songs[whichText].lyrics.length * 1.2
+   var wrapperWidth;
+d3.select("p").text(""+songs[whichText].name+" – "+songs[whichText].interpret+"");
+d3.select(".wrapper")
+  .style('max-width', function(){
+   var result
+    songs[whichText].lyrics.forEach(function(e){
+        if (e != undefined){
+            wordCount = wordCount + e.length
+        }
+    })
+    console.log("WC: "+wordCount)
 
-            // } else {
-            //     var result = "220px"
-            //     wrapperWidth = 220
+   if ((wordCount)>200){
+    var result = ""+wordCount*1.35+"px"
+    wrapperWidth = wordCount*1.35
 
-            // }
-            return "500px"
-        })
+   }else{
+    var result  = "250px"
+    wrapperWidth = 250
+
+   }   
+    return result
+  })
 
 
     //add elements
+
+
+
     processedTexts.forEach(function(e, i) {
-      yOrigin += 21;
-      xOrigin = -26;
-      var referecenY = 0
+      // yOrigin += 26;
+      // xOrigin = -26;
+      // var referecenY = 0
       d3.select(".wrapper svg").append("g").attr("id", "line"+i+"").attr("class", "line")
-      console.log(i)
       d3.select("g#line"+i+"")
         .selectAll("g.course")
         .data(e)
         .enter().append("g")
         .attr("class", "course")
-        .attr("transform", function(d) {
+        .attr("transform", function (){
+        if ((PlacementCounter%Math.floor((wrapperWidth) / 26)) == 0 ){
+          yOrigin += 26; 
+          xOrigin = -26
+            }
+            PlacementCounter++;
             xOrigin += 26;
 
-            return "translate(" + xOrigin + "," + yOrigin + ")"
+            return "translate("+xOrigin+","+yOrigin+")"
         })
         .each(function(d) {
             d3.select(this).append("path")
@@ -242,7 +257,28 @@ var createObjects = function() {
                 })
 
     })
-    
+    d3.select("g#line"+i+"").append("text").text("/")
+        .attr("width", "26px")
+        .attr("height", "26px")
+        .attr("transform", function (){
+        if ((PlacementCounter%Math.floor((wrapperWidth) / 26)) == 0 ){
+          yOrigin += 26; 
+          xOrigin = -26
+            }
+            PlacementCounter++;
+            xOrigin += 26;
+
+            return "translate("+xOrigin+","+(yOrigin+13)+")"
+        })
+        .attr("font-size", "16px")
+        .attr("fill", "#e2e2e2")
+        .attr("opacity", "0.5")
+        // .attr("y", function(){
+        //     // xOrigin += 13;
+        //     return ""+(yOrigin+13)+"px";
+
+        // })
+
 
 
 
@@ -300,3 +336,62 @@ d3.select(".next").on("click", function() {
     }
     createObjects()
 })
+
+// var paths=["M15.0715655 4.46169795 12.8901865 8.1263716 12.8901865 14.3213542 7.53578274 12.0884577 1.45231278 12.5925726 0.624476107 8.1263716 0 4.46169795 3.98079201 2.29841943 7.53578274 0 12.243428 2.29841943" ,"M13.2110413 4.46169795 12.3088474 8.93005056 11.0296624 13.4516405 5.67525857 14.3213542 1.29623642 11.216657 1.13947583 8.93005056 0 5.23651161 3.0234237 3.14509777 5.67525857 0 9.20416264 3.14509777" ,"M15.0715655 3.82643324 12.8901865 7.50646382 12.8901865 12.8163758 7.53578274 13.6860895 3.91221636 9.91442931 0 8.29478586 0.713964895 3.82643324 4.88394787 2.50983307 7.53578274 0 11.4059296 2.50983307","M15.0715655 4.46169795 12.1693716 8.93005056 12.8901865 13.4516405 7.53578274 14.3213542 3.15676059 11.216657 0 8.93005056 1.86052417 5.23651161 4.88394787 3.14509777 7.53578274 0 11.0646868 3.14509777"]
+
+
+
+// setInterval(function(){ 
+
+//   d3.selectAll('path')
+//     .transition()
+//     .duration(function(){
+//       var score = this.getAttribute("data-score")
+//       var time = 1000;
+//       switch (score) {
+//         case 1:
+//           time = 600;
+//           break;
+//         case 2:
+//           time = 400;
+//           break;
+//         case 3:
+//           time = 200;
+//           break;
+//         case -1:
+//           time = 600;
+//           break;
+//         case -2:
+//           time = 400;
+//           break; 
+//         case -3:
+//           time = 200;
+//           break; 
+//         default: 
+//           time = 600;
+//       }
+//       return time;
+//     })
+//     .ease(d3.easePoly.exponent(1))
+//       .attr("d", function(d, i) { 
+//         if(this.getAttribute("data-score") >= 0){
+//           var rndm1 = Math.random() * 0.8 + 0.19;
+//           var rndm2 = Math.random() * 0.8 + 0.19;
+//           var rndm3 = Math.random() * 0.8 + 0.19;
+//           var rndm4 = Math.random() * 0.8 + 0.19;
+//           if(d.pos == ',' || d.pos == '.' || d.pos == ':' || d.pos == '(' || d.pos == ')' || d.pos == '"' || d.pos == '$' || d.pos == 'SYM'){
+//             var path = createPath(0,0,4,4, rndm1, rndm2, rndm3, rndm3)
+//           }else{
+//             var path = createPath(0,0,14,14, rndm1, rndm2, rndm3, rndm3)
+//           }
+//         }else{
+
+//           var path = paths[Math.floor(Math.random()*paths.length)]
+//         }
+//         return path
+
+//       })
+//       .style('left', 0)
+//       .style('top', 0)
+
+// }, time);
