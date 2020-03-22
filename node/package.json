@@ -10,8 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "emotional": "0.0.3",
+    "file-system": "^2.2.2",
     "pos": "^0.4.2",
-    "sentiment": "^5.0.1",
-    "wink-sentiment": "^5.0.0"
+    "sentiment": "^5.0.2",
+    "wink-sentiment": "^5.0.2"
   }
 }

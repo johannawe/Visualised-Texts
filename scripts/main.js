@@ -150,7 +150,14 @@ d3.select(".wrapper")
             d3.select(this).append("path")
                 .attr("id", function() {
                     idCounter++;
-                    setInterval(function(id, score) {
+                    //---enables movement
+
+                    // setInterval(function(id, score) {
+                    //     changeShape("blob_" + id, score)
+                    // }, setTime(d.score), idCounter, d.score)
+
+                    //---------
+                    setTimeout(function(id, score) {
                         changeShape("blob_" + id, score)
                     }, setTime(d.score), idCounter, d.score)
                     return "blob_" + idCounter
